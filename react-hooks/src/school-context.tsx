@@ -3,6 +3,7 @@ import { createContext, useContext, useReducer } from "react";
 export type Student = {
   id: string;
   name: string;
+  assignments?: { assignment: string; grade?: string }[];
 };
 
 export type Teacher = {
@@ -21,6 +22,8 @@ export enum SchoolActionKind {
   ADD_STUDENT = "ADD_STUDENT",
   UPDATE_STUDENT = "UPDATE_STUDENT",
   ASSIGN_STUDENT_TO_TEACHER = "ASSIGN_STUDENT_TO_TEACHER",
+  ASSIGN_ASSIGNMENT = "ASSIGN_ASSIGNMENT",
+  GRADE_ASSIGNMENT = "GRADE_ASSIGNMENT",
 }
 
 export type SchoolAction =
@@ -41,6 +44,21 @@ export type SchoolAction =
       payload: {
         teacherId: string;
         studentId: string;
+      };
+    }
+  | {
+      type: SchoolActionKind.ASSIGN_ASSIGNMENT;
+      payload: {
+        studentId: string;
+        assignment: string;
+      };
+    }
+  | {
+      type: SchoolActionKind.GRADE_ASSIGNMENT;
+      payload: {
+        studentId: string;
+        assignment: string;
+        grade: string;
       };
     };
 
@@ -100,11 +118,41 @@ export function schoolReducer(
         }
       }
       return { ...state, teachers: updatedTeacher };
+    case SchoolActionKind.ASSIGN_ASSIGNMENT:
+      return {
+        ...state,
+        students: state.students.map((student) =>
+          student.id === action.payload.studentId
+            ? {
+                ...student,
+                assignments: [
+                  ...(student.assignments || []),
+                  { assignment: action.payload.assignment },
+                ],
+              }
+            : student
+        ),
+      };
+    case SchoolActionKind.GRADE_ASSIGNMENT:
+      return {
+        ...state,
+        students: state.students.map((student) =>
+          student.id === action.payload.studentId
+            ? {
+                ...student,
+                assignments: student.assignments?.map((a) =>
+                  a.assignment === action.payload.assignment
+                    ? { ...a, grade: action.payload.grade }
+                    : a
+                ),
+              }
+            : student
+        ),
+      };
     default:
       return state;
   }
 }
-
 const initialState: InitialState = {
   teachers: [],
   students: [],
