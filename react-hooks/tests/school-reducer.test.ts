@@ -1,16 +1,17 @@
 import { SchoolActionKind, schoolReducer } from "../src/school-context";
+import { describe, test, expect } from "@jest/globals";
 
 describe("School reducer test", () => {
   describe("Add Teacher action", () => {
-    it("should add a teacher", () => {
+    test("should add a teacher", () => {
       const state = schoolReducer(
-        { teachers: [], students: [] },
+        { teachers: [], students: [], assignments: [] },
         {
           type: SchoolActionKind.ADD_TEACHER,
           payload: { id: "1", name: "First Teacher", students: [] },
         }
       );
-      expect(state.teachers[0].id).to.equal("1");
+      expect(state.teachers[0].id).toBe("1");
     });
   });
 });

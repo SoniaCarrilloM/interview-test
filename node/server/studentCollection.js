@@ -1,22 +1,10 @@
 class StudentCollection {
   constructor() {
-    this.students = {};
-  }
-
-  getStudents() {
-    return Object.values(this.students);
-  }
-
-  addStudent(student) {
-    this.students[student.id] = student;
-  }
-
-  getStudentById(id) {
-    return this.students[id];
-  }
-
-  clear() {
-    this.students = {};
+    this.students = [
+      { id: 1, name: "Alice" },
+      { id: 2, name: "Bob" },
+      { id: 3, name: "Charlie" },
+    ];
   }
 
   static getInstance() {
@@ -24,6 +12,18 @@ class StudentCollection {
       StudentCollection.instance = new StudentCollection();
     }
     return StudentCollection.instance;
+  }
+
+  getStudents() {
+    return this.students;
+  }
+
+  getStudentById(id) {
+    return this.students.find((student) => student.id === parseInt(id));
+  }
+
+  addStudent(student) {
+    this.students.push(student);
   }
 }
 

@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const assignmentRoutes = require("./node/server/assignmentRoute");
-const teacherRoutes = require("./node/server/teacherRoutes");
-const studentRoutes = require("./node/server/studentRoute");
+const assignmentRoutes = require("./assignmentRoutes");
+const teacherRoutes = require("./teacherRoutes");
+const studentRoutes = require("./studentRoutes");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001; // Change the port to 3001
 
 app.use(bodyParser.json());
 
@@ -14,6 +14,8 @@ assignmentRoutes(app);
 teacherRoutes(app);
 studentRoutes(app);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+module.exports = app;

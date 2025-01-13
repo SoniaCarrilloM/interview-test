@@ -5,12 +5,14 @@ module.exports = (app) => {
   const studentList = StudentCollection.getInstance();
   const teacherList = TeacherCollection.getInstance();
 
+  // Get all teachers
   app.route("/teachers").get((req, res) => {
     const teachers = teacherList.getTeachers();
     console.log("Retrieved teachers:", teachers); // Logging for debugging
     res.json(teachers);
   });
 
+  // Add new teachers
   app.route("/teachers").post((req, res) => {
     const teachers = req.body;
     if (!Array.isArray(teachers)) {
@@ -25,6 +27,7 @@ module.exports = (app) => {
     res.sendStatus(201);
   });
 
+  // Update a teacher by ID
   app.route("/teachers/:teacherId").put((req, res) => {
     const putBody = req.body;
     const teacherId = req.params.teacherId;
@@ -37,6 +40,7 @@ module.exports = (app) => {
     res.json(teacherToUpdate);
   });
 
+  // Assign students to a teacher
   app.route("/teachers/:teacherId/students").put((req, res) => {
     const putBody = req.body;
     const teacherId = req.params.teacherId;
@@ -61,6 +65,7 @@ module.exports = (app) => {
     res.json(teacherToUpdate);
   });
 
+  // Get students assigned to a teacher
   app.route("/teachers/:teacherId/students").get((req, res) => {
     const teacherId = req.params.teacherId;
     const teacher = teacherList.getTeacherById(teacherId);

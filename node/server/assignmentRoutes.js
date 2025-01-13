@@ -5,10 +5,12 @@ module.exports = (app) => {
   const assignmentList = assignmentCollection.getInstance();
   const studentList = studentCollection.getInstance();
 
+  // Get all assignments
   app.route("/assignments").get((req, res) => {
     res.json(assignmentList.getAssignments());
   });
 
+  // Add new assignments
   app.route("/assignments").post((req, res) => {
     const assignments = req.body;
     if (!Array.isArray(assignments)) {
@@ -23,6 +25,7 @@ module.exports = (app) => {
     res.sendStatus(201);
   });
 
+  // Update assignments
   app.route("/assignments").put((req, res) => {
     const assignments = req.body;
     if (!Array.isArray(assignments)) {
@@ -45,6 +48,7 @@ module.exports = (app) => {
     res.sendStatus(200);
   });
 
+  // Grade an assignment
   app.route("/assignments/:assignmentId/grade").put((req, res) => {
     const putBody = req.body;
     const assignmentId = req.params.assignmentId;
@@ -64,6 +68,7 @@ module.exports = (app) => {
     res.json(assignmentToUpdate);
   });
 
+  // Generate report
   app.route("/assignments/report").get((req, res) => {
     const date = req.query.date;
     const report = assignmentList
@@ -90,4 +95,3 @@ module.exports = (app) => {
     });
   });
 };
-// Compare this snippet from node/server/teacher.js

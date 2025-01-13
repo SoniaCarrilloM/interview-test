@@ -188,10 +188,10 @@ function App() {
   };
 
   const handleGenerateReport = (date: string) => {
-    fetch("/assignments/report")
+    fetch(`/assignments/report?date=${date}`)
       .then((response) => response.json())
       .then((data) => {
-        const reportData = data.map((assignment: any) => {
+        const reportData = data.report.map((assignment: any) => {
           const passed = assignment.grade === "Pass";
           return { id: assignment.studentId, passed };
         });
@@ -207,7 +207,7 @@ function App() {
     <div className="App">
       <img src="/infinitas-logo.svg" alt="Infinitas Logo" />
 
-      <h1>IL Interview all new features /not refactored (test3newfeatures)</h1>
+      <h1>IL Interview-Test</h1>
 
       <div className="section">
         <h2>Teacher</h2>
@@ -280,7 +280,6 @@ function App() {
           </button>
         </form>
       </div>
-
       <div className="section">
         <h2>Students</h2>
         <table>
@@ -337,46 +336,60 @@ function App() {
           </button>
         </form>
         <div className="section">
-          <h2>Assignments</h2>
-          <label htmlFor="assignment">Assignment:</label>
+          <h2>Select Student</h2>
+          <label htmlFor="studentSelect"></label>
+          <select
+            id="studentSelect"
+            value={studentEditingId || ""}
+            onChange={(e) => setUserEditingId(e.target.value)}
+          >
+            <option value="">Select Student</option>
+            {school?.students.map((student) => (
+              <option key={student.id} value={student.id}>
+                {student.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="section">
+          <h2>Select Assignment</h2>
+          <label htmlFor="studentSelect"></label>
           <select
             id="assignment"
             value={assignment}
             onChange={(e) => setAssignmentState(e.target.value)}
           >
-            {" "}
-            <option value="">Select Assignment</option>{" "}
-            <option value="middleAges">🏰 Middle Ages</option>{" "}
+            <option value="">Select Assignment</option>
+            <option value="middleAges">🏰 Middle Ages</option>
             <option value="industrialRevolution">
-              {" "}
               🏭 Industrial Revolution
-            </option>{" "}
-          </select>{" "}
+            </option>
+            <option value="renaissance">🎨 Renaissance</option>
+          </select>
           <button
             style={{ color: "red" }}
             onClick={() => handleAssignAssignment(studentEditingId!)}
           >
-            Assign Assignment
+            Save
           </button>
         </div>
         <div>
-          {" "}
-          <label htmlFor="grade">Grade:</label>{" "}
+          <label htmlFor="grade"></label>
           <select
             id="grade"
             value={grade}
             onChange={(e) => setGrade(e.target.value)}
           >
-            {" "}
-            <option value="">Select Grade</option>{" "}
-            <option value="passed">😊 Passed</option>{" "}
-            <option value="failed">😢 Failed</option>{" "}
-          </select>{" "}
+            <option value="">Grade</option>
+            <option value="passed">😊 Passed</option>
+            <option value="failed">😢 Failed</option>
+          </select>
           <button
             style={{ color: "red" }}
             onClick={() => handleGradeAssignment(studentEditingId!)}
           >
-            Grade Assignment
+            Save
           </button>
         </div>
       </div>

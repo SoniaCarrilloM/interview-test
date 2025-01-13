@@ -1,22 +1,10 @@
 class TeacherCollection {
   constructor() {
-    this.teachers = {};
-  }
-
-  getTeachers() {
-    return Object.values(this.teachers);
-  }
-
-  addTeacher(teacher) {
-    this.teachers[teacher.id] = teacher;
-  }
-
-  getTeacherById(id) {
-    return this.teachers[id];
-  }
-
-  clear() {
-    this.teachers = {};
+    this.teachers = [
+      { id: 1, name: "Mr. Smith", students: [] },
+      { id: 2, name: "Ms. Johnson", students: [] },
+      { id: 3, name: "Mrs. Brown", students: [] },
+    ];
   }
 
   static getInstance() {
@@ -24,6 +12,18 @@ class TeacherCollection {
       TeacherCollection.instance = new TeacherCollection();
     }
     return TeacherCollection.instance;
+  }
+
+  getTeachers() {
+    return this.teachers;
+  }
+
+  getTeacherById(id) {
+    return this.teachers.find((teacher) => teacher.id === parseInt(id));
+  }
+
+  addTeacher(teacher) {
+    this.teachers.push(teacher);
   }
 }
 
