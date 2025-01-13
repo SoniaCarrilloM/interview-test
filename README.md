@@ -40,3 +40,7 @@ In the pair programming session, you will work on some of the features listed ab
 - Please make sure that it runs on your machine. If you have the interview in the office, bring your laptop and If you don't have one, please let us know and we will provide you with a laptop with the code on it.
 - It might be helpful if you have an idea of an implementation approach
 - If you choose to implement the assignment on your own time, there will be further enhancements available, but we will neither give you bonus points nor an easier ride if you choose to do this.
+
+# Improvements - suggestions 
+1. README should contain an instructio manual on how to run the applicaition locally.
+2. Content of repository? node folder / each applicaition has its own package.json to start, build dependencies etc... / to start the node appli
