@@ -1,33 +1,30 @@
-module.exports = (() => {
-  let instance;
+class StudentCollection {
+  constructor() {
+    this.students = {};
+  }
 
-  const createInstance = () => {
-    let students = {};
-    return {
-      addStudent: (student) => {
-        students[student.id] = student;
-      },
-      getStudents: () => {
-        return Object.values(students);
-      },
-      getStudentById: (studentId) => {
-        return students[studentId];
-      },
-      clear: () => {
-        students = {};
-      },
-      update: (studentToUpdate, updates) => {
-        students[studentToUpdate.id].name = updates.name;
-      }
-    }
-  };
+  getStudents() {
+    return Object.values(this.students);
+  }
 
-  return {
-    getInstance: function () {
-      if (!instance) {
-        instance = createInstance();
-      }
-      return instance;
+  addStudent(student) {
+    this.students[student.id] = student;
+  }
+
+  getStudentById(id) {
+    return this.students[id];
+  }
+
+  clear() {
+    this.students = {};
+  }
+
+  static getInstance() {
+    if (!StudentCollection.instance) {
+      StudentCollection.instance = new StudentCollection();
     }
-  };
-})();
+    return StudentCollection.instance;
+  }
+}
+
+module.exports = StudentCollection;

@@ -90,4 +90,4 @@ module.exports = (app) => {
     });
   });
 };
-// Compare this snippet from node/server/teacher.js:
+// Compare this snippet from node/server/teacher.js

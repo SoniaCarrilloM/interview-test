@@ -1,12 +1,14 @@
-const studentCollection = require("./studentCollection");
-const teacherCollection = require("./teacherCollection");
+const StudentCollection = require("./studentCollection");
+const TeacherCollection = require("./teacherCollection");
 
 module.exports = (app) => {
-  const studentList = studentCollection.getInstance();
-  const teacherList = teacherCollection.getInstance();
+  const studentList = StudentCollection.getInstance();
+  const teacherList = TeacherCollection.getInstance();
 
   app.route("/teachers").get((req, res) => {
-    res.json(teacherList.getTeachers());
+    const teachers = teacherList.getTeachers();
+    console.log("Retrieved teachers:", teachers); // Logging for debugging
+    res.json(teachers);
   });
 
   app.route("/teachers").post((req, res) => {
@@ -52,7 +54,7 @@ module.exports = (app) => {
     putBody.students.forEach((studentId) => {
       const studentToAdd = studentList.getStudentById(studentId);
       if (studentToAdd) {
-        teacherToUpdate.addStudent(studentToAdd);
+        teacherToUpdate.students.push(studentToAdd.id);
       }
     });
 
@@ -70,6 +72,7 @@ module.exports = (app) => {
     const students = teacher.students.map((studentId) =>
       studentList.getStudentById(studentId)
     );
+    console.log("Retrieved students for teacher:", students); // Logging for debugging
     res.json(students);
   });
 };

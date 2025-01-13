@@ -1,32 +1,30 @@
-const teacher = require('./teacher');
+class TeacherCollection {
+  constructor() {
+    this.teachers = {};
+  }
 
-module.exports = (() => {
-  let instance;
+  getTeachers() {
+    return Object.values(this.teachers);
+  }
 
-  const createInstance = () => {
-    let teachers = {};
-    return {
-      addTeacher: (teacher) => {
-        teachers[teacher.id] = teacher;
-      },
-      getTeachers: () => {
-        return Object.values(teachers);
-      },
-      getTeacherById: (teacherId) => {
-        return teacher(teachers[teacherId]);
-      },
-      clear: () => {
-        teachers = {};
-      },
+  addTeacher(teacher) {
+    this.teachers[teacher.id] = teacher;
+  }
+
+  getTeacherById(id) {
+    return this.teachers[id];
+  }
+
+  clear() {
+    this.teachers = {};
+  }
+
+  static getInstance() {
+    if (!TeacherCollection.instance) {
+      TeacherCollection.instance = new TeacherCollection();
     }
-  };
+    return TeacherCollection.instance;
+  }
+}
 
-  return {
-    getInstance: function () {
-      if (!instance) {
-        instance = createInstance();
-      }
-      return instance;
-    }
-  };
-})();
+module.exports = TeacherCollection;
