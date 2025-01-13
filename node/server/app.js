@@ -1,12 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const assignmentRoutes = require("./assignmentRoutes");
 const teacherRoutes = require("./teacherRoutes");
 const studentRoutes = require("./studentRoutes");
 
 const app = express();
-const port = process.env.PORT || 3001; // Change the port to 3001
+const port = process.env.PORT || 3001; //
 
+// Middleware
+app.use(cors({ origin: "http://localhost:3003" })); // Add this line to allow requests from the frontend's origin
 app.use(bodyParser.json());
 
 // Register routes

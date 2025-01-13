@@ -24,27 +24,30 @@ function App() {
 
   useEffect(() => {
     // Fetch initial data from the backend
-    fetch("/teachers")
+    fetch("http://localhost:3001/teachers")
       .then((response) => response.json())
       .then((data) => {
+        console.log("Fetched teachers:", data); // Add console log
         schoolDispatch?.({
           type: SchoolActionKind.SET_TEACHERS,
           payload: data,
         });
       });
 
-    fetch("/students")
+    fetch("http://localhost:3001/students")
       .then((response) => response.json())
       .then((data) => {
+        console.log("Fetched students:", data); // Add console log
         schoolDispatch?.({
           type: SchoolActionKind.SET_STUDENTS,
           payload: data,
         });
       });
 
-    fetch("/assignments")
+    fetch("http://localhost:3001/assignments")
       .then((response) => response.json())
       .then((data) => {
+        console.log("Fetched assignments:", data); // Add console log
         schoolDispatch?.({
           type: SchoolActionKind.SET_ASSIGNMENTS,
           payload: data,
@@ -60,18 +63,29 @@ function App() {
     const id = crypto.randomUUID();
     const newTeacher = { name: teacherName, id, students: [] };
 
-    fetch("/teachers", {
+    fetch("http://localhost:3001/teachers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify([newTeacher]),
-    }).then(() => {
-      schoolDispatch?.({
-        type: SchoolActionKind.ADD_TEACHER,
-        payload: newTeacher,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        console.log("Added teacher:", newTeacher); // Add console log
+        schoolDispatch?.({
+          type: SchoolActionKind.ADD_TEACHER,
+          payload: newTeacher,
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding teacher:", error); // Add console log
       });
-    });
 
     target.reset();
   };
@@ -84,18 +98,29 @@ function App() {
     const id = crypto.randomUUID();
     const newStudent = { name: studentName, id, assignments: [] };
 
-    fetch("/students", {
+    fetch("http://localhost:3001/students", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify([newStudent]),
-    }).then(() => {
-      schoolDispatch?.({
-        type: SchoolActionKind.ADD_STUDENT,
-        payload: newStudent,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        console.log("Added student:", newStudent); // Add console log
+        schoolDispatch?.({
+          type: SchoolActionKind.ADD_STUDENT,
+          payload: newStudent,
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding student:", error); // Add console log
       });
-    });
 
     target.reset();
   };
@@ -104,13 +129,14 @@ function App() {
     if (studentEditingId) {
       const updatedStudent = { name: updatedStudentName, id: studentEditingId };
 
-      fetch(`/students/${studentEditingId}`, {
+      fetch(`http://localhost:3001/students/${studentEditingId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedStudent),
       }).then(() => {
+        console.log("Updated student:", updatedStudent); // Add console log
         schoolDispatch?.({
           type: SchoolActionKind.UPDATE_STUDENT,
           payload: updatedStudent,
@@ -124,13 +150,14 @@ function App() {
 
   const handleAssignStudent = () => {
     if (teacherEditingId && newAssignedStudentId) {
-      fetch(`/teachers/${teacherEditingId}/students`, {
+      fetch(`http://localhost:3001/teachers/${teacherEditingId}/students`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ students: [newAssignedStudentId] }),
       }).then(() => {
+        console.log("Assigned student:", newAssignedStudentId); // Add console log
         schoolDispatch?.({
           type: SchoolActionKind.ASSIGN_STUDENT_TO_TEACHER,
           payload: {
@@ -149,32 +176,46 @@ function App() {
       studentId,
     };
 
-    fetch("/assignments", {
+    console.log("Assigning assignment:", newAssignment); // Add console log
+
+    fetch(`http://localhost:3001/students/${studentId}/assignments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([newAssignment]),
-    }).then(() => {
-      schoolDispatch?.({
-        type: SchoolActionKind.ASSIGN_ASSIGNMENT,
-        payload: {
-          studentId,
-          assignment,
-        },
+      body: JSON.stringify(newAssignment),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        console.log("Assigned assignment:", newAssignment); // Add console log
+        schoolDispatch?.({
+          type: SchoolActionKind.ASSIGN_ASSIGNMENT,
+          payload: {
+            studentId,
+            assignment: newAssignment,
+          },
+        });
+        setAssignmentState("");
+      })
+      .catch((error) => {
+        console.error("Error assigning assignment:", error); // Add console log
       });
-      setAssignmentState("");
-    });
   };
 
   const handleGradeAssignment = (studentId: string) => {
-    fetch(`/assignments/${assignment}/grade`, {
+    fetch(`http://localhost:3001/assignments/${assignment}/grade`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ grade }),
     }).then(() => {
+      console.log("Graded assignment:", { studentId, assignment, grade }); // Add console log
       schoolDispatch?.({
         type: SchoolActionKind.GRADE_ASSIGNMENT,
         payload: {
@@ -186,10 +227,16 @@ function App() {
       setGrade("");
     });
   };
-
   const handleGenerateReport = (date: string) => {
-    fetch(`/assignments/report?date=${date}`)
-      .then((response) => response.json())
+    console.log("Generating report for date:", date); // Add console log
+
+    fetch(`http://localhost:3001/assignments/report?date=${date}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         const reportData = data.report.map((assignment: any) => {
           const passed = assignment.grade === "Pass";
@@ -200,6 +247,9 @@ function App() {
           reportData.filter((student: any) => student.passed).length || 0;
         console.log(`Number of students who passed on ${date}: ${passedCount}`);
         setReport(reportData);
+      })
+      .catch((error) => {
+        console.error("Error generating report:", error); // Add console log
       });
   };
 
@@ -351,10 +401,9 @@ function App() {
             ))}
           </select>
         </div>
-
         <div className="section">
           <h2>Select Assignment</h2>
-          <label htmlFor="studentSelect"></label>
+          <label htmlFor="assignment"></label>
           <select
             id="assignment"
             value={assignment}
@@ -381,7 +430,7 @@ function App() {
             value={grade}
             onChange={(e) => setGrade(e.target.value)}
           >
-            <option value="">Grade</option>
+            <option value="">Select Grade</option>
             <option value="passed">😊 Passed</option>
             <option value="failed">😢 Failed</option>
           </select>
