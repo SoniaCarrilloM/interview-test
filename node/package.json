@@ -4,8 +4,8 @@
   "description": "Infinitas Learning Interview Test",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node ./server"
+    "start": "node ./server",
+    "test": "mocha --config mocha.config.js"
   },
   "repository": {
     "type": "git",
@@ -18,11 +18,20 @@
   },
   "homepage": "https://github.com/infinitaslearning/interview-test#readme",
   "dependencies": {
+    "@types/chai-as-promised": "^8.0.1",
     "body-parser": "^1.18.3",
-    "chai": "^4.2.0",
+    "chai-as-promised": "^8.0.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "mocha": "^5.2.0",
     "supertest": "^3.4.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^5.0.1",
+    "@types/chai-http": "^3.0.5",
+    "@types/mocha": "^10.0.10",
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
+    "mocha": "^11.0.1",
+    "ts-node": "^10.9.2"
   }
 }
