@@ -11,14 +11,14 @@ const port = process.env.PORT || 3001; //
 // Middleware
 app.use(cors({ origin: "http://localhost:3003" })); // Add this line to allow requests from the frontend's origin
 app.use(bodyParser.json());
+app.listen(3001, () => {
+  console.log("Server is running on port 3001");
 
 // Register routes
 assignmentRoutes(app);
 teacherRoutes(app);
 studentRoutes(app);
 
-const server = app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
 });
 
 module.exports = app;

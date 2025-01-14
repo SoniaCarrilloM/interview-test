@@ -24,7 +24,7 @@ function App() {
 
   useEffect(() => {
     // Fetch initial data from the backend
-    fetch("http://localhost:3001/teachers")
+    fetch("http://127.0.0.1:3001/teachers")
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched teachers:", data); // Add console log
@@ -34,7 +34,7 @@ function App() {
         });
       });
 
-    fetch("http://localhost:3001/students")
+    fetch("http://127.0.0.1:3001/students")
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched students:", data); // Add console log
@@ -44,7 +44,7 @@ function App() {
         });
       });
 
-    fetch("http://localhost:3001/assignments")
+    fetch("http://127.0.0.1:3001/assignments")
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched assignments:", data); // Add console log
@@ -63,7 +63,7 @@ function App() {
     const id = crypto.randomUUID();
     const newTeacher = { name: teacherName, id, students: [] };
 
-    fetch("http://localhost:3001/teachers", {
+    fetch("http://127.0.0.1:3001/teachers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ function App() {
     const id = crypto.randomUUID();
     const newStudent = { name: studentName, id, assignments: [] };
 
-    fetch("http://localhost:3001/students", {
+    fetch("http://127.0.0.1:3001/students", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +129,7 @@ function App() {
     if (studentEditingId) {
       const updatedStudent = { name: updatedStudentName, id: studentEditingId };
 
-      fetch(`http://localhost:3001/students/${studentEditingId}`, {
+      fetch(`http://127.0.0.1:3001/students/${studentEditingId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -150,7 +150,7 @@ function App() {
 
   const handleAssignStudent = () => {
     if (teacherEditingId && newAssignedStudentId) {
-      fetch(`http://localhost:3001/teachers/${teacherEditingId}/students`, {
+      fetch(`http://127.0.0.1:3001/teachers/${teacherEditingId}/students`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +178,7 @@ function App() {
 
     console.log("Assigning assignment:", newAssignment); // Add console log
 
-    fetch(`http://localhost:3001/students/${studentId}/assignments`, {
+    fetch(`http://127.0.0.1:3001/students/${studentId}/assignments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -208,7 +208,7 @@ function App() {
   };
 
   const handleGradeAssignment = (studentId: string) => {
-    fetch(`http://localhost:3001/assignments/${assignment}/grade`, {
+    fetch(`http://127.0.01:3001/assignments/${assignment}/grade`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -230,7 +230,7 @@ function App() {
   const handleGenerateReport = (date: string) => {
     console.log("Generating report for date:", date); // Add console log
 
-    fetch(`http://localhost:3001/assignments/report?date=${date}`)
+    fetch(`http://127.0.0.1:3001/assignments/report?date=${date}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
